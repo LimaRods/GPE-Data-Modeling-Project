@@ -4,11 +4,21 @@ create database GPE_DATABASE;
 /*TABLE TEAM*/
 -- Team table is the parent table, which will be the table that a foreign key references
 -- team_ids is the parent key because is the columm  in the parent table which the FK references
+-- The AUTO_INCREMENT attribute can be used to generate a unique identity for new rows automatically.
+-- ...You don't need to assign values into id columns (or their alias) when creating new rows.
 CREATE TABLE GPE_DATABASE.Team (
-    team_ids INTEGER PRIMARY KEY,
-    team_name VARCHAR(30) UNIQUE
+    team_ids INTEGER PRIMARY KEY AUTO_INCREMENT,
+    team_name VARCHAR(30) NOT NULL UNIQUE
 );
 
+/*ROLES TABLE*/
+-- Role Table is also a parent table of Volunteers table
+CREATE TABLE GPE_DATABASE.Roles (
+    role_ids INT PRIMARY KEY AUTO_INCREMENT,
+    role_name VARCHAR(30) NOT NULL UNIQUE,
+    role_description TEXT
+);
+    
 /*VOLUNTEERS TABLE*/
 -- Volunteers is the child table, which the FK constraint apply
 -- the team_id  is called the child key, generalythe child key references to the primary key in the parent table
@@ -16,23 +26,27 @@ CREATE TABLE GPE_DATABASE.Volunteers (
     volunteer_ids INTEGER NOT NULL,
     name VARCHAR(60) NOT NULL,
     degree VARCHAR(60),
-    team_id INTEGER,
+    team_id INTEGER NOT NULL,
+    role_id INTEGER NOT NULL,
     start_date DATE,
     end_date DATE,
-    PRIMARY KEY (volunteer_ids , team_id),
+    PRIMARY KEY (volunteer_ids , team_id , role_id),
     FOREIGN KEY (team_id)
         REFERENCES Team (team_ids)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (role_id)
+        REFERENCES Roles (role_ids)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 /*TABLE APPLICANTS*/
-CREATE TABLE GPE_DATABASE.Applicants (
+CREATE TABLE IF NOT EXISTS GPE_DATABASE.Applicants (
     student_code CHAR(6) PRIMARY KEY,
-    email VARCHAR(60) UNIQUE,
-    student_id INTEGER UNIQUE,
+    email VARCHAR(60) NOT NULL UNIQUE,
+    student_id INTEGER NOT NULL UNIQUE,
     neighborhood VARCHAR(60) NOT NULL,
     city VARCHAR(60) NOT NULL,
-    phone_number VARCHAR(60) UNIQUE,
+    phone_number VARCHAR(60) NOT NULL UNIQUE,
     current_status VARCHAR(100) NOT NULL,
     internet_access VARCHAR(100) NOT NULL,
     highschool VARCHAR(100) NOT NULL,
@@ -65,8 +79,10 @@ CREATE TABLE GPE_DATABASE.Applicants (
 );
     
 /* ENTRANCE EXAM TABLE*/
-CREATE TABLE GPE_DATABASE.Exam_Entrance (
+CREATE TABLE IF NOT EXISTS GPE_DATABASE.Entrance_Exame (
     student_code CHAR(6) PRIMARY KEY,
+    geography DECIMAL(5 , 4 ) NOT NULL,
+    biology DECIMAL(5 , 4 ) NOT NULL,
     chemistry DECIMAL(5 , 4 ) NOT NULL,
     history DECIMAL(5 , 4 ) NOT NULL,
     math DECIMAL(5 , 4 ) NOT NULL,
@@ -99,6 +115,8 @@ CREATE TABLE GPE_DATABASE.Students (
 CREATE TABLE GPE_DATABASE.Exams (
     student_code CHAR(6),
     exame_number INTEGER,
+    geography DECIMAL(5 , 4 ) NOT NULL,
+    biology DECIMAL(5 , 4 ) NOT NULL,
     chemistry DECIMAL(5 , 4 ) NOT NULL,
     history DECIMAL(5 , 4 ) NOT NULL,
     math DECIMAL(5 , 4 ) NOT NULL,
@@ -114,8 +132,15 @@ CREATE TABLE GPE_DATABASE.Exams (
 );
 
 
-/*DROP TABLES*/
+/*-----------------------DROP TABLES-----------------------*/
 drop table GPE_DATABASE.S;
 
-/*TEST QUERIES*/
-select * from GPE_DATABASE.Applicants;
+/*-----------------------TEST QUERIES-----------------------*/
+select * from GPE_DATABASE.Team;
+
+/*-----------------------TEST TO INSERT VALUES INTO TABLE-----------------------*/
+insert into GPE_DATABASE.Team (team_name) values
+							('Matematica'),
+                            ('Portuga'),
+                            ('Japones')
+                            ;
