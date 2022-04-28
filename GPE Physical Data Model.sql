@@ -26,6 +26,7 @@ CREATE TABLE GPE_DATABASE.Volunteers (
     volunteer_ids INTEGER NOT NULL,
     name VARCHAR(60) NOT NULL,
     degree VARCHAR(60),
+    university VARCHAR(50),
     team_id INTEGER NOT NULL,
     role_id INTEGER NOT NULL,
     start_date DATE,
@@ -42,40 +43,41 @@ CREATE TABLE GPE_DATABASE.Volunteers (
 /*TABLE APPLICANTS*/
 CREATE TABLE IF NOT EXISTS GPE_DATABASE.Applicants (
     student_code CHAR(6) PRIMARY KEY,
+    name VARCHAR(60) NOT NULL,
     email VARCHAR(60) NOT NULL UNIQUE,
     student_id INTEGER NOT NULL UNIQUE,
     neighborhood VARCHAR(60) NOT NULL,
     city VARCHAR(60) NOT NULL,
     phone_number VARCHAR(60) NOT NULL UNIQUE,
-    current_status VARCHAR(100) NOT NULL,
-    internet_access VARCHAR(100) NOT NULL,
-    highschool VARCHAR(100) NOT NULL,
-    secoundary_school VARCHAR(100) NOT NULL,
-    race VARCHAR(100) NOT NULL,
-    people_living_with_you VARCHAR(100) NOT NULL,
-    father_education VARCHAR(100) NOT NULL,
-    mother_education VARCHAR(100) NOT NULL,
-    tutelary_ecucation VARCHAR(100) NOT NULL,
-    avg_income VARCHAR(100) NOT NULL,
-    avg_income_percapita VARCHAR(100) NOT NULL,
-    father_occuparion VARCHAR(100) NOT NULL,
-    mother_occupation VARCHAR(100) NOT NULL,
-    personal_occupation VARCHAR(100) NOT NULL,
-    matao_residence VARCHAR(100) NOT NULL,
-    who_living_with_you VARCHAR(100) NOT NULL,
-    age VARCHAR(15) NOT NULL,
-    vehicle VARCHAR(60) NOT NULL,
-    marital_status VARCHAR(60) NOT NULL,
-    books VARCHAR(60) NOT NULL,
-    books_type VARCHAR(500) NOT NULL,
-    movie_theather VARCHAR(60) NOT NULL,
-    museum VARCHAR(60) NOT NULL,
-    additional_courses VARCHAR(60) NOT NULL,
-    career VARCHAR(100) NOT NULL,
-    study_room BOOL NOT NULL,
-    computers VARCHAR(30) NOT NULL,
-    smartphones VARCHAR(30) NOT NULL,
-    parents_conversation VARCHAR(500) NOT NULL
+    current_status VARCHAR(100),
+    internet_access VARCHAR(100),
+    highschool VARCHAR(100),
+    secoundary_school VARCHAR(100),
+    race VARCHAR(100),
+    people_living_with_you VARCHAR(100),
+    father_education VARCHAR(100),
+    mother_education VARCHAR(100),
+    tutelary_ecucation VARCHAR(100),
+    avg_income VARCHAR(100),
+    avg_income_percapita VARCHAR(100),
+    father_occuparion VARCHAR(100),
+    mother_occupation VARCHAR(100),
+    personal_occupation VARCHAR(100),
+    matao_residence VARCHAR(100),
+    who_living_with_you VARCHAR(100),
+    age VARCHAR(15),
+    vehicle VARCHAR(60),
+    marital_status VARCHAR(60),
+    books VARCHAR(60),
+    books_type VARCHAR(500),
+    movie_theather VARCHAR(60),
+    museum VARCHAR(60),
+    additional_courses VARCHAR(60),
+    career VARCHAR(100),
+    study_room BOOL,
+    computers VARCHAR(30),
+    smartphones VARCHAR(30),
+    parents_conversation VARCHAR(500)
 );
     
 /* ENTRANCE EXAM TABLE*/
@@ -89,8 +91,8 @@ CREATE TABLE IF NOT EXISTS GPE_DATABASE.Entrance_Exame (
     physics DECIMAL(5 , 4 ) NOT NULL,
     portuguese DECIMAL(5 , 4 ) NOT NULL,
     literature DECIMAL(5 , 4 ) NOT NULL,
-    english DECIMAL(5 , 4 ) NOT NULL,
-    interdisplinary DECIMAL(5 , 4 ) NOT NULL,
+    english DECIMAL(5 , 4 ),
+    interdisplinary DECIMAL(5 , 4 ),
     FOREIGN KEY (student_code)
         REFERENCES Applicants (student_code)
         ON DELETE CASCADE ON UPDATE CASCADE
@@ -123,8 +125,8 @@ CREATE TABLE GPE_DATABASE.Exams (
     physics DECIMAL(5 , 4 ) NOT NULL,
     portuguese DECIMAL(5 , 4 ) NOT NULL,
     literature DECIMAL(5 , 4 ) NOT NULL,
-    english DECIMAL(5 , 4 ) NOT NULL,
-    interdisplinary DECIMAL(5 , 4 ) NOT NULL,
+    english DECIMAL(5 , 4 ),
+    interdisplinary DECIMAL(5 , 4 ),
     PRIMARY KEY (student_code , exame_number),
     FOREIGN KEY (student_code)
         REFERENCES Students (student_code)
@@ -132,8 +134,11 @@ CREATE TABLE GPE_DATABASE.Exams (
 );
 
 
-/*-----------------------DROP TABLES-----------------------*/
-drop table GPE_DATABASE.S;
+/*-----------------------DROP TABLES AND DATABASE-----------------------*/
+drop table GPE_DATABASE.S
+;
+-- CAUTION !!!
+drop database GPE_DATABASE;
 
 /*-----------------------TEST QUERIES-----------------------*/
 select * from GPE_DATABASE.Team;
