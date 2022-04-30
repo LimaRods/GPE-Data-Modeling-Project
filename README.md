@@ -2,7 +2,7 @@
  
 This project is part of a digital transformation headed by me in a non-profit organization whose goal is to make education more democratic. The organization’s name is Grupo Pró-Estudar (GPE), and it offers preparatory courses for entrance exams in  Brazilian universities for low-income individuals.
 
-The main purpose here is to create a database to centralize the data we received from our processes. We receive data from candidates who fill the socio-economic forms, as well as their performance in our own entrance exam. Once the candidate is eligible to become our student, we track their personal information and results in tests we applied over the year. We also would like to store information about our volunteers.
+The main purpose here is to create a database to centralize the data we received from our processes. We receive data from candidates who fill the socio-economic forms, as well as their performance in our entrance exam. Once the candidate is eligible to become our student, we track their personal information and results in tests we applied over the year. We also would like to store information about our volunteers.
 
 
 The project for modeling a database can be divided into 3 phases: **Conceptual** data model, **Logical** data model, and **Physical** data model.
