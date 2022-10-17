@@ -6,6 +6,8 @@ create database GPE_DATABASE;
 -- team_ids is the parent key because is the columm  in the parent table which the FK references
 -- The AUTO_INCREMENT attribute can be used to generate a unique identity for new rows automatically.
 -- ...You don't need to assign values into id columns (or their alias) when creating new rows.
+
+DROP TABLE IF EXISTS GPE_DATABASE.Team;
 CREATE TABLE GPE_DATABASE.Team (
     team_ids INTEGER PRIMARY KEY AUTO_INCREMENT,
     team_name VARCHAR(30) NOT NULL UNIQUE
@@ -13,6 +15,7 @@ CREATE TABLE GPE_DATABASE.Team (
 
 /*ROLES TABLE*/
 -- Role Table is also a parent table of Volunteers table
+DROP TABLE IF EXISTS GPE_DATABASE.Roles;
 CREATE TABLE GPE_DATABASE.Roles (
     role_ids INT PRIMARY KEY AUTO_INCREMENT,
     role_name VARCHAR(30) NOT NULL UNIQUE,
@@ -22,15 +25,18 @@ CREATE TABLE GPE_DATABASE.Roles (
 /*VOLUNTEERS TABLE*/
 -- Volunteers is the child table, which the FK constraint apply
 -- the team_id  is called the child key, generalythe child key references to the primary key in the parent table
-CREATE TABLE GPE_DATABASE.Volunteers (
+DROP TABLE IF EXISTS GPE_DATABASE.Volunteers;
+CREATE TABLE IF NOT EXISTS GPE_DATABASE.Volunteers (
     volunteer_ids INTEGER NOT NULL,
     name VARCHAR(60) NOT NULL,
-    degree VARCHAR(60),
-    university VARCHAR(50),
+    email VARCHAR(60),
+    phone_number VARCHAR(60),
+    degree VARCHAR(60) DEFAULT NULL,
+    university VARCHAR(50) DEFAULT NULL,
     team_id INTEGER NOT NULL,
     role_id INTEGER NOT NULL,
-    start_date DATE,
-    end_date DATE,
+    start_date DATE DEFAULT NULL,
+    end_date DATE DEFAULT NULL,
     PRIMARY KEY (volunteer_ids , team_id , role_id),
     FOREIGN KEY (team_id)
         REFERENCES Team (team_ids)
@@ -41,12 +47,14 @@ CREATE TABLE GPE_DATABASE.Volunteers (
 );
 
 /*TABLE APPLICANTS*/
+DROP TABLE IF EXISTS GPE_DATABASE.Applicants;
 CREATE TABLE IF NOT EXISTS GPE_DATABASE.Applicants (
     student_code CHAR(6) PRIMARY KEY,
-    name VARCHAR(60) NOT NULL,
-    email VARCHAR(60) NOT NULL UNIQUE,
-    student_id INTEGER NOT NULL UNIQUE,
-    neighborhood VARCHAR(60) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    student_id VARCHAR(15) NOT NULL UNIQUE,
+	address VARCHAR(200) NOT NULL,
+    neighborhood VARCHAR(200) NOT NULL,
     city VARCHAR(60) NOT NULL,
     phone_number VARCHAR(60) NOT NULL UNIQUE,
     current_status VARCHAR(100),
@@ -54,11 +62,9 @@ CREATE TABLE IF NOT EXISTS GPE_DATABASE.Applicants (
     highschool VARCHAR(100),
     secoundary_school VARCHAR(100),
     race VARCHAR(100),
-    people_living_with_you VARCHAR(100),
     father_education VARCHAR(100),
     mother_education VARCHAR(100),
     tutelary_ecucation VARCHAR(100),
-    avg_income VARCHAR(100),
     avg_income_percapita VARCHAR(100),
     father_occuparion VARCHAR(100),
     mother_occupation VARCHAR(100),
@@ -72,15 +78,16 @@ CREATE TABLE IF NOT EXISTS GPE_DATABASE.Applicants (
     books_type VARCHAR(500),
     movie_theather VARCHAR(60),
     museum VARCHAR(60),
-    additional_courses VARCHAR(60),
+    additional_courses VARCHAR(600),
     career VARCHAR(100),
     study_room BOOL,
     computers VARCHAR(30),
     smartphones VARCHAR(30),
-    parents_conversation VARCHAR(500)
+    parents_conversation VARCHAR(600)
 );
     
 /* ENTRANCE EXAM TABLE*/
+DROP TABLE IF EXISTS GPE_DATABASE.Entrance_Exame;
 CREATE TABLE IF NOT EXISTS GPE_DATABASE.Entrance_Exame (
     student_code CHAR(6) PRIMARY KEY,
     geography DECIMAL(5 , 4 ) NOT NULL,
@@ -92,19 +99,20 @@ CREATE TABLE IF NOT EXISTS GPE_DATABASE.Entrance_Exame (
     portuguese DECIMAL(5 , 4 ) NOT NULL,
     literature DECIMAL(5 , 4 ) NOT NULL,
     english DECIMAL(5 , 4 ),
-    interdisplinary DECIMAL(5 , 4 ),
+    interdisciplinary DECIMAL(5 , 4 ),
     FOREIGN KEY (student_code)
         REFERENCES Applicants (student_code)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
     
 /* STUDENT TABLES */
+DROP TABLE IF EXISTS GPE_DATABASE.Students;
 CREATE TABLE GPE_DATABASE.Students (
     student_code CHAR(6) PRIMARY KEY,
     NSE DECIMAL(5 , 4 ) NOT NULL,
-    start_date DATE,
-    end_date DATE,
-    volunteer_id INTEGER,
+    start_date DATE DEFAULT NULL,
+    end_date DATE DEFAULT NULL,
+    volunteer_id INTEGER DEFAULT NULL,
     FOREIGN KEY (student_code)
         REFERENCES Applicants (student_code)
         ON DELETE CASCADE ON UPDATE CASCADE,
@@ -114,9 +122,10 @@ CREATE TABLE GPE_DATABASE.Students (
 );
 
 /* EXAMS TABLE */
+DROP TABLE IF EXISTS GPE_DATABASE.Exams ;
 CREATE TABLE GPE_DATABASE.Exams (
-    student_code CHAR(6),
-    exame_number INTEGER,
+    student_code CHAR(6) NOT NULL,
+    exame_number INTEGER NOT NULL,
     geography DECIMAL(5 , 4 ) NOT NULL,
     biology DECIMAL(5 , 4 ) NOT NULL,
     chemistry DECIMAL(5 , 4 ) NOT NULL,
@@ -126,16 +135,16 @@ CREATE TABLE GPE_DATABASE.Exams (
     portuguese DECIMAL(5 , 4 ) NOT NULL,
     literature DECIMAL(5 , 4 ) NOT NULL,
     english DECIMAL(5 , 4 ),
-    interdisplinary DECIMAL(5 , 4 ),
+    interdisciplinary DECIMAL(5 , 4 ),
     PRIMARY KEY (student_code , exame_number),
     FOREIGN KEY (student_code)
-        REFERENCES Students (student_code)
+        REFERENCES Applicants (student_code)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
 /*-----------------------DROP TABLES AND DATABASE-----------------------*/
-drop table GPE_DATABASE.S
+drop table GPE_DATABASE.Applicants
 ;
 -- CAUTION !!!
 drop database GPE_DATABASE;
