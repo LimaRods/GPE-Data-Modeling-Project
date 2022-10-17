@@ -42,5 +42,11 @@ SELECT
     *
 FROM
     GPE_DATABASE.Roles
-ORDER BY role_ids
+ORDER BY role_ids;
+
+SELECT 
+    *
+FROM
+    Team
+ORDER BY team_ids;
 ;  
